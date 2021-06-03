@@ -45,8 +45,8 @@
                     bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none">
                                 </div>
                                 
-                               <div class="py-1 text-lg font-semibold">
-                                   <p x-text="status"></p>
+                               <div class="py-1 text-center" >
+                                   <p :class="{'text-green-700': registrationStatus === true, 'text-red-700': registrationStatus === false}" x-text="submitStatus"></p>
                                </div>
 
                                 <div class="flex justify-start mt-3 ml-4 p-1">
@@ -133,14 +133,15 @@
                     password_confirm: ''
                 },
                 
-                status: "",
+                submitStatus: "",
+                registrationStatus: false,
                 loading: false,
                 buttonLabel: 'Submit',
 
                 submitData() {
 
                     if(!this.formData.email.length || !this.formData.password.length || !this.formData.password_confirm.length) {
-                        this.status = "Please fill all form fields and try again!";
+                        this.submitStatus = "Please fill all form fields and try again!";
                         return;
                     }
 
@@ -153,10 +154,11 @@
                         body: JSON.stringify(this.formData)
                     })
                     .then(() => {
-                        this.status = 'Form sucessfully submitted!'
+                        this.registrationStatus = true;
+                        this.submitStatus = 'Form sucessfully submitted!'
                     })
                     .catch(() => {
-                        this.status = 'Ooops! Something went wrong!'
+                        this.submitStatus = 'Ooops! Something went wrong!'
                     })
                     .finally(() => {
                         this.loading = false;
