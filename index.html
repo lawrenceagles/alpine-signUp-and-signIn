@@ -24,7 +24,7 @@
                         </div>
 
                         <div class="mt-4">
-                            <button @click="registrationStatus = false" class="mt-3 text-lg font-semibold bg-gray-800 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black">
+                            <button @click="location.reload()" class="mt-3 text-lg font-semibold bg-gray-800 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black">
                                 Close Modal
                             </button>
                         </div>
@@ -38,11 +38,8 @@
                         <div class="text-center font-semibold text-black text-2xl">
                             DailyDotDev SignUp
                         </div>
-                        <!-- <div class="text-center font-base text-black">
-                            Sed ut perspiciatis unde?
-                        </div> -->
 
-                        <form x-ref="regForm" action="/register" method="POST" class="mt-8" @submit.prevent="submitData">
+                        <form action="/register" method="POST" class="mt-8" @submit.prevent="submitData">
 
                             <div class="mx-auto max-w-lg ">
 
