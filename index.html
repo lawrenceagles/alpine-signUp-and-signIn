@@ -13,14 +13,15 @@
     <div class="bg-gray-200 relative min-h-screen antialiased border-t-8 border-black">
         <div class="max-w-sm mx-auto px-6" x-data="getData()">
 
-            <div x-show.transition="registrationStatus" style="background-color: rgb(0,0,0, .5)"
+            <div x-show.transition="status || isError" style="background-color: rgb(0,0,0, .5)"
                 class="mx-auto absolute top-0 left-0 w-full h-full flex items-center shadow-lg overflow-y-auto">
                 <div class="container mx-auto rounded p-4 mt-2 overflow-y-auto">
                     <div class="bg-white rounded px-8 py-8 max-w-lg mx-auto">
-                        <h1 class="font-bold text-2xl mb-3 text-center">Congratulations!!!</h1>
-                        <div class="modal-body text-center">
-                            <p>You have been successfully registered!
-                            </p>
+                        <h1 
+                            class="font-bold text-2xl mb-3 text-center" 
+                            x-text="modalHeaderText"></h1>
+                        <div :class="{'text-green-700': status, 'text-red-700': isError}" class="modal-body text-center">
+                            <p x-text="modalBodyText"></p>
                         </div>
 
                         <div class="mt-4 flex flex-col items-center">
@@ -35,11 +36,11 @@
                 </div>
             </div>
 
-            <div x-show="!registrationStatus" class="relative h-screen flex flex-wrap items-center">
+            <div x-show="!status && !isError" class="relative h-screen flex flex-wrap items-center">
                 <div class="w-full relative">
                     <div class="mt-6">
                         <div class="text-center font-semibold text-black text-2xl">
-                            Welcome SignUp
+                         SignUp
                         </div>
 
                         <form action="/register" method="POST" class="mt-8" @submit.prevent="submitData">
@@ -150,13 +151,16 @@
         function getData() {
             return {
                 formData: {
-                    email: '',
-                    password: '',
-                    password_confirm: ''
+                    email: "",
+                    password: "",
+                    password_confirm: ""
                 },
 
-                registrationStatus: false,
+                status: false,
                 loading: false,
+                isError: false,
+                modalHeaderText: "",
+                modalBodyText: "",
                 buttonLabel: 'Submit',
 
                 isEmail(email) {
@@ -183,11 +187,17 @@
                             },
                             body: JSON.stringify(this.formData)
                         })
-                        .then(() => {
-                            this.registrationStatus = true;
+                        .then((response) => {
+                            throw new Error("")
+                            this.modalHeaderText = "Congratulations!!!"
+                            this.modalBodyText = "You have been successfully registered!";
+                            this.status = true;
                         })
-                        .catch(() => {
-                            console.log("'Ooops! Something went wrong!'")
+                        .catch((error) => {
+                            this.modalHeaderText = "Ooops Error!"
+                            this.modalBodyText = error.message || "Your registration failed";
+                            this.isError = true;
+                            console.log("Error", error.message);
                         })
                         .finally(() => {
                             this.loading = false;
