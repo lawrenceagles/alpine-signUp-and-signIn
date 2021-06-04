@@ -11,7 +11,7 @@
 
 <body>
     <div class="bg-gray-200 relative min-h-screen antialiased border-t-8 border-black">
-        <div class="max-w-sm mx-auto px-6" x-data="getData()"> 
+        <div class="max-w-sm mx-auto px-6" x-data="getData()">
 
             <div x-show.transition="registrationStatus" style="background-color: rgb(0,0,0, .5)"
                 class="mx-auto absolute top-0 left-0 w-full h-full flex items-center shadow-lg overflow-y-auto">
@@ -24,15 +24,16 @@
                         </div>
 
                         <div class="mt-4">
-                            <button @click="location.reload()" class="mt-3 text-lg font-semibold bg-gray-800 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black">
+                            <button @click="location.reload()"
+                                class="mt-3 text-lg font-semibold bg-gray-800 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black">
                                 Close Modal
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <div  x-show="!registrationStatus" class="relative h-screen flex flex-wrap items-center">
+
+            <div x-show="!registrationStatus" class="relative h-screen flex flex-wrap items-center">
                 <div class="w-full relative">
                     <div class="mt-6">
                         <div class="text-center font-semibold text-black text-2xl">
@@ -66,25 +67,25 @@
 
                                 <div class="flex justify-start mt-3 ml-4 p-1">
                                     <ul>
-                                        <li class="flex items-center py-1">
-                                            <div :class="{'bg-green-200 text-green-700': formData.email.length > 6, 'bg-red-200 text-red-700': formData.email.length === 0}"
+                                        <li x-show="formData.email.length > 0" class="flex items-center py-1">
+                                            <div :class="{'bg-green-200 text-green-700': isEmail(formData.email), 'bg-red-200 text-red-700': !isEmail(formData.email)}"
                                                 class=" rounded-full p-1 fill-current ">
                                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                                                     stroke="currentColor">
                                                     <path
-                                                        x-show="formData.password === formData.password_confirm && formData.password.length > 0"
+                                                        x-show="isEmail(formData.email)"
                                                         stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M5 13l4 4L19 7" />
                                                     <path
-                                                        x-show="formData.password !== formData.password_confirm || formData.password.length === 0"
+                                                        x-show="!isEmail(formData.email)"
                                                         stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </div>
                                             <span
-                                                :class="{'text-green-700': formData.password === formData.password_confirm && formData.password.length > 0, 'text-red-700':formData.password !== formData.password_confirm || formData.password.length === 0}"
+                                                :class="{'text-green-700': isEmail(formData.email), 'text-red-700': !isEmail(formData.email)}"
                                                 class="font-medium text-sm ml-3"
-                                                x-text="formData.password === formData.password_confirm && formData.password.length > 0 ? 'Email is valid' : 'Enter a valid email' "></span>
+                                                x-text="isEmail(formData.email) ? 'Email is valid' : 'Enter a valid email' "></span>
                                         </li>
 
                                         <li class="flex items-center py-1">
@@ -156,6 +157,11 @@
                 registrationStatus: false,
                 loading: false,
                 buttonLabel: 'Submit',
+
+                isEmail(email) {
+                    var re = /\S+@\S+\.\S+/;
+                    return re.test(email);
+                },
 
                 submitData() {
 
