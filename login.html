@@ -131,50 +131,7 @@
                 status: false,
                 loading: false,
                 isError: false,
-                modalHeaderText: "",
-                modalBodyText: "",
-                buttonLabel: 'Submit',
 
-                isEmail(email) {
-                    var re = /\S+@\S+\.\S+/;
-                    return re.test(email);
-                },
-
-                submitData() {
-
-                    if (!this.formData.email.length || !this.formData.password.length || !this.formData.password_confirm
-                        .length) {
-                        alert("Please fill out all required field and try again!")
-                        return;
-                    }
-
-
-                    this.buttonLabel = 'Submitting...'
-                    this.loading = true;
-
-                    fetch('/register', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(this.formData)
-                        })
-                        .then((response) => {
-                            this.modalHeaderText = "Congratulations!!!"
-                            this.modalBodyText = "You have been successfully registered!";
-                            this.status = true;
-                        })
-                        .catch((error) => {
-                            this.modalHeaderText = "Ooops Error!"
-                            this.modalBodyText = error.message || "Your registration failed";
-                            this.isError = true;
-                            console.log("Error", error.message);
-                        })
-                        .finally(() => {
-                            this.loading = false;
-                            this.buttonLabel = 'Submit'
-                        })
-                }
             }
         }
     </script>
